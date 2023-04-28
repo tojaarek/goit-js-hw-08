@@ -1,12 +1,14 @@
-import Player from "@vimeo/player/src/player";
-import throttle from "lodash.throttle";
+import Player from '@vimeo/player/src/player';
+import throttle from 'lodash.throttle';
 
 const player = new Player('vimeo-player');
 
-const saveTimeToLocalStorage = localStorage.setItem('videoplayer-current-time', 'time');
+player.on(
+  'timeupdate',
+  throttle(time => {
+    localStorage.setItem('videoplayer-current-time', time.seconds);
+  }),
+  1000
+);
 
-player.on('timeupdate', saveTimeToLocalStorage);
-
-const currentTime = localStorage.getItem('videoplayer-current-time');
-player.setCurrentTime(currentTime);
-
+player.setCurrentTime(localStorage.getItem('videoplayer-current-time'));
