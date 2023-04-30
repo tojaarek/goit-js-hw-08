@@ -17,17 +17,21 @@ form.addEventListener('input', saveData);
 
 function restoreData() {
   const dataRestored = JSON.parse(localStorage.getItem('feedback-form-state'));
-  if (dataRestored) {
-    email.value = dataRestored.email;
-    message.value = dataRestored.message;
-  }
+  email.value = dataRestored.email;
+  message.value = dataRestored.message;
 }
 
 restoreData();
 
 function handleSubmit(event) {
   event.preventDefault();
+  const dataRestored = JSON.parse(localStorage.getItem('feedback-form-state'));
+  console.log(`email: ${dataRestored.email}, message: ${dataRestored.message}`);
+  form.reset();
   localStorage.removeItem('feedback-form-state');
 }
 
-button.addEventListener('submit', handleSubmit);
+button.addEventListener('click', event => {
+  event.stopPropagation();
+  handleSubmit(event);
+});
